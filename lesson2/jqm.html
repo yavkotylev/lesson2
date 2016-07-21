@@ -10,6 +10,12 @@
         <script src="lib/jquery-2.0.0.min.js"></script>		
         <script src="js/jquery.mobile-1.4.5.min.js" type="application/x-javascript" charset="utf-8"></script>	
         <script src="js/jqJS.js"></script>	
+        <script src="js/t-api.js"></script>
+        <script src="js/camera.js"></script>
+        <script src="js/wi_fi.js"></script>
+        <script src="js/battery.js"></script>
+         <script src="js/fileSystem.js"></script>
+        
 		<script>		
 
 			window.addEventListener('tizenhwkey', function onTizenHwKey(e) {
@@ -17,6 +23,8 @@
 			    	history.back();
 			    }
 			});
+
+			writeLog("open app");
 		</script>
     </head>
 	<body>		
@@ -28,7 +36,10 @@
 			<div data-role="content" >	
 				<ul data-role="listview" data-inset="true" data-theme="a">
 					<li><a href="#search">Поиск</a></li>
-					<li><a href="#contact">Связаться с нами</a></li>
+					<li><a href="#contact" onclick='writeLog("feedback");'>Связаться с нами</a></li>
+					<li><a href="#selfcamera">SelfCamera</a></li>
+					<li><a href="#feedback" onclick='getAllMess();'>Отзывы</a></li>
+					
 				</ul>
 			</div>
 			<div data-role="footer">
@@ -52,8 +63,9 @@
 				</ul>
 				<label for="name">Ваше имя:</label>
 					<input type="text" name="name" id="name" value=""  />
-					<label for="textarea">Что можно улучшить:</label>
-					<textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>	
+					<label  for="textarea">Что можно улучшить:</label>
+					<textarea cols="40" rows="8" name="textarea" id="textareaBetter"></textarea>	
+					<button onclick='writeMess();'>Отправить предложение</button>
 			</div>
 
 		</div>
@@ -68,7 +80,7 @@
 					<input type="range" name="slider" id="slider" value="0" min="-50" max="50" />	
 					<p/>
 					<label for="slider2">Значение:</label>
-					<select name="slider2" id="slider2" data-role="slider">
+					<select name="slider2" id="BTslider" data-role="slider" onchange="OnOffBT();">
 						<option value="off">off</option>
 						<option value="on">on</option>
 					</select> 
@@ -80,9 +92,18 @@
 						<option value="c">C</option>
 					</select>						
 				</div>	
+				<div id="WifiInformation"></div>
+				
 				<script>
 				    $("select").change(function () {changeTheme($("select option:selected").text());});
 				</script>
+				<button onclick="SingleVibro();">Single vibro</button>
+				<button onclick="MultiVibro();">Multi vibro</button>
+				<button onclick="StopVibro();">Stop vibro</button>
+				<button onclick="GetInfo();">Get Info</button>
+				<button onclick="StartAlarm();">Start Alarm</button>
+				<button onclick='WriteFile();'>Write File</button>
+				<div id="BatteryInformation"></div>
 			</div>
 
 		</div>
@@ -109,6 +130,45 @@
 				    searchDB($('#searchId').val());
 				});
 			</script>
+		</div>
+		
+		
+		<div data-role="page" id="selfcamera" data-theme="a">
+			<div data-role="header" >
+				<h1>Selfe</h1>
+			</div>
+			<div data-role="content" >	
+				<div id="camera"></div>
+			</div>
+			<div data-role="footer">
+				Footer Footer
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		<div data-role="page" id="feedback" data-theme="a">
+		
+			<div data-role="header" >
+				<h1>Список отзывов</h1>
+			</div>
+			<div data-role="content" >	
+				<div id="listMess">
+				</div>
+			</div>
+		</div>
+		
+		
+		<div data-role="page" id="showFeedback" data-theme="a">
+		
+			<div data-role="header" >
+				<h1>Отзывы</h1>
+			</div>
+			<div data-role="content" >	
+				<div id="textMess"></div>
+			</div>
 		</div>
 	</body>
 </html>
